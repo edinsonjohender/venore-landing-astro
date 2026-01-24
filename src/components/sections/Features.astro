@@ -1,0 +1,78 @@
+---
+const features = [
+  {
+    label: "VISUALIZATION",
+    title: "Isometric Grid",
+    content: "Each feature as a tower\nshowing maturity status",
+  },
+  {
+    label: "SYNC",
+    title: "<100ms",
+    content: "Real-time updates\n.context.md detection",
+  },
+  {
+    label: "CONNECTIONS",
+    title: "Visual Links",
+    content: "Dependencies as\nanimated lines",
+  },
+  {
+    label: "LAYERS",
+    title: "4 Levels",
+    content: "context · integration\ndocs · tests",
+  },
+  {
+    label: "STATUS",
+    title: "Color-coded",
+    content: "stable · in-progress\ncritical · deprecated",
+  },
+  {
+    label: "AI AGENT",
+    title: "Auto-generate",
+    content: ".context.md files\nconfigurable depth",
+  },
+];
+---
+
+<section id="features" class="border-t border-border">
+  <div class="grid grid-cols-2 lg:grid-cols-4">
+    <!-- Header cell - larger -->
+    <div
+      class="animate-on-scroll animate-on-scroll-fade col-span-2 lg:col-span-1 lg:row-span-2 border-b border-r border-border p-8 lg:p-10 flex flex-col justify-center"
+    >
+      <p class="text-xs text-foreground-subtle uppercase tracking-wider mb-3">Features</p>
+      <h2 class="text-6xl lg:text-8xl font-bold tracking-tight leading-[0.9]">
+        What's
+        <br />
+        <span class="text-foreground-muted">inside</span>
+      </h2>
+    </div>
+
+    {features.map((feature, index) => (
+      <div
+        class={`animate-on-scroll delay-${index + 1} border-b border-r border-border p-6 lg:p-8`}
+      >
+        <p class="text-xs text-foreground-subtle uppercase tracking-wider mb-3">{feature.label}</p>
+        <p class="text-lg font-mono text-foreground mb-2">{feature.title}</p>
+        <p class="text-xs text-foreground-subtle font-mono leading-relaxed whitespace-pre-line">{feature.content}</p>
+      </div>
+    ))}
+  </div>
+</section>
+
+<script>
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    },
+    { threshold: 0.1 }
+  );
+
+  document.querySelectorAll('#features .animate-on-scroll, #features .animate-on-scroll-fade').forEach((el) => {
+    observer.observe(el);
+  });
+</script>

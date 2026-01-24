@@ -1,0 +1,131 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { Navbar } from '../../components/sections/Navbar';
+import { Footer } from '../../components/sections/Footer';
+
+const posts = (await getCollection('blog'))
+  .filter(post => !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const [featuredPost, ...recentPosts] = posts;
+---
+
+<Layout title="Blog | VENORE">
+  <div class="min-h-screen flex flex-col">
+  <Navbar client:load />
+
+  <main class="pt-14 flex-1">
+    <div class="container mx-auto px-6 py-16">
+      <h1 class="text-4xl font-bold mb-12">Blog</h1>
+
+      {/* Featured Post */}
+      {featuredPost && (
+        <a href={`/blog/${featuredPost.slug}`} class="block mb-16 group">
+          <div class="flex flex-col md:flex-row gap-6 items-center justify-center">
+            <div class="w-full md:w-[400px] shrink-0 aspect-[16/10] bg-background-tertiary rounded-lg overflow-hidden border border-border">
+              {featuredPost.data.image ? (
+                <img
+                  src={featuredPost.data.image}
+                  alt={featuredPost.data.title}
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              ) : (
+                <div class="w-full h-full flex items-center justify-center">
+                  <div class="w-16 h-16 rounded-lg bg-status-stable/20 flex items-center justify-center">
+                    <svg class="w-8 h-8 text-status-stable" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                    </svg>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div class="flex flex-col justify-center">
+              <div class="flex items-center gap-2 text-sm text-foreground-muted mb-3">
+                <span class="text-status-stable">{featuredPost.data.category}</span>
+                <span>·</span>
+                <time>
+                  {featuredPost.data.date.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </time>
+              </div>
+              <h2 class="text-2xl lg:text-3xl font-bold mb-4 group-hover:text-foreground-muted transition-colors">
+                {featuredPost.data.title}
+              </h2>
+              <p class="text-foreground-muted leading-relaxed">
+                {featuredPost.data.description}
+              </p>
+            </div>
+          </div>
+        </a>
+      )}
+
+      {/* Recent Posts */}
+      {recentPosts.length > 0 && (
+        <section>
+          <h2 class="text-xl font-semibold mb-8">Recent Posts</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {recentPosts.map((post) => (
+              <a href={`/blog/${post.slug}`} class="group block">
+                <article class="h-full border border-border rounded-lg overflow-hidden hover:border-border-hover transition-colors">
+                  <div class="aspect-video bg-background-tertiary">
+                    {post.data.image ? (
+                      <img
+                        src={post.data.image}
+                        alt={post.data.title}
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    ) : (
+                      <div class="w-full h-full flex items-center justify-center">
+                        <div class="w-12 h-12 rounded-lg bg-status-stable/20 flex items-center justify-center">
+                          <svg class="w-6 h-6 text-status-stable" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                          </svg>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <div class="p-5">
+                    <h3 class="font-semibold mb-2 group-hover:text-foreground-muted transition-colors line-clamp-2">
+                      {post.data.title}
+                    </h3>
+                    <div class="flex items-center gap-2 text-sm text-foreground-subtle">
+                      <span class="text-status-stable">{post.data.category}</span>
+                      <span>·</span>
+                      <time>
+                        {post.data.date.toLocaleDateString('en-US', {
+                          month: 'short',
+                          day: 'numeric',
+                          year: 'numeric'
+                        })}
+                      </time>
+                    </div>
+                  </div>
+                </article>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {posts.length === 0 && (
+        <p class="text-foreground-muted">No posts yet.</p>
+      )}
+    </div>
+  </main>
+
+  <Footer />
+  </div>
+</Layout>
+
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

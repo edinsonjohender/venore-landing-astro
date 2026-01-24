@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://venore.app/sitemap-index.xml

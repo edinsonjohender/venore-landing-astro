@@ -1,0 +1,226 @@
+---
+const steps = [
+  {
+    number: "01",
+    title: "Generate",
+    subtitle: "Context",
+    description: "Run the AI agent to auto-create .context.md files instantly, or add them manually for granular control.",
+  },
+  {
+    number: "02",
+    title: "Load",
+    subtitle: "Project",
+    description: "Open VENORE and select your root folder. The engine indexes and syncs your codebase in real-time.",
+  },
+  {
+    number: "03",
+    title: "Explore",
+    subtitle: "& Navigate",
+    description: "Pan, zoom, and click. Watch dependencies light up and visualize your architecture's health.",
+  },
+  {
+    number: "04",
+    title: "Collaborate",
+    subtitle: "& Share",
+    description: "Share visual context with your team. Everyone sees the same architecture, from junior devs to AI agents.",
+  },
+];
+---
+
+<section id="how-it-works" class="bg-foreground text-background relative">
+  <!-- Header -->
+  <div class="border-b border-background/20 p-8 lg:p-12">
+    <p class="text-xs text-background/90 uppercase tracking-wider mb-4 font-semibold">How it works</p>
+    <h2 class="text-4xl lg:text-6xl font-bold tracking-tight text-background">
+      From zero to <span class="text-background/50">visual architecture</span>
+    </h2>
+  </div>
+
+  <!-- Carousel container (Grid: 3 columns) -->
+  <div class="grid grid-cols-[auto_1fr_auto]">
+    <!-- Left arrow column (hidden initially) -->
+    <button
+      id="carousel-prev"
+      class="border-r border-background/20 bg-foreground hover:bg-foreground/95 flex items-center justify-center opacity-0 w-0"
+      style="transition: width 300ms ease, opacity 300ms ease; will-change: width, opacity;"
+      aria-label="Previous"
+    >
+      <span class="text-6xl text-background/40 hover:text-background/60 transition-colors">←</span>
+    </button>
+
+    <!-- Scroll container (center column) -->
+    <div id="carousel-container" class="overflow-x-hidden scroll-smooth">
+      <div id="carousel-track" class="flex">
+        {steps.map((step, index) => (
+          <div
+            class="flex-shrink-0 w-[calc(100vw-120px)] sm:w-[400px] lg:w-[500px] border-r border-background/20 p-6 sm:p-8 lg:p-12"
+            data-step={index}
+          >
+            <!-- Large number -->
+            <span class="text-7xl sm:text-8xl lg:text-9xl font-bold text-background/10 leading-none">
+              {step.number}
+            </span>
+
+            <!-- Title with mixed typography -->
+            <h3 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1] mt-4 mb-6 text-background">
+              {step.title}
+              <br />
+              <span class="text-background/50">{step.subtitle}</span>
+            </h3>
+
+            <!-- Description -->
+            <p class="text-sm text-background/60 leading-relaxed max-w-xs">
+              {step.description}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- Right arrow column (full width initially) -->
+    <button
+      id="carousel-next"
+      class="border-l border-background/20 bg-foreground hover:bg-foreground/95 flex items-center justify-center w-[200px] lg:w-[300px]"
+      style="transition: width 300ms ease, opacity 300ms ease; will-change: width, opacity;"
+      aria-label="Next"
+    >
+      <span class="text-6xl text-background/40 hover:text-background/60 transition-colors">→</span>
+    </button>
+  </div>
+</section>
+
+<script>
+  const container = document.getElementById('carousel-container');
+  const track = document.getElementById('carousel-track');
+  const prevBtn = document.getElementById('carousel-prev');
+  const nextBtn = document.getElementById('carousel-next');
+
+  if (container && track && prevBtn && nextBtn) {
+    // Cache de valores calculados
+    let cachedStepWidth = 0;
+    let cachedVisibleSteps = 0;
+    let cacheValid = false;
+
+    // Invalidar cache
+    const invalidateCache = () => {
+      cacheValid = false;
+    };
+
+    // Obtener ancho de un cuadro (cached)
+    const getStepWidth = () => {
+      if (!cacheValid) {
+        const firstStep = track.querySelector('[data-step]') as HTMLElement;
+        cachedStepWidth = firstStep ? firstStep.offsetWidth : 500;
+      }
+      return cachedStepWidth;
+    };
+
+    // Calcular cuántos cuadros se ven en el viewport (cached)
+    const getVisibleSteps = () => {
+      if (!cacheValid) {
+        const containerWidth = container.offsetWidth;
+        const stepWidth = getStepWidth();
+        cachedVisibleSteps = Math.floor(containerWidth / stepWidth);
+        cacheValid = true;
+      }
+      return cachedVisibleSteps;
+    };
+
+    // Obtener total de pasos
+    const totalSteps = track.querySelectorAll('[data-step]').length;
+    let currentStep = 0;
+
+    // Debounce helper
+    const debounce = (fn: Function, delay: number) => {
+      let timeoutId: number;
+      return (...args: any[]) => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => fn(...args), delay);
+      };
+    };
+
+    // Actualizar estado de botones
+    const updateButtons = () => {
+      const visibleSteps = getVisibleSteps();
+      const maxStep = Math.max(0, totalSteps - visibleSteps); // Último paso posible
+
+      // Anchos de flechas según viewport
+      const arrowWidthFull = window.innerWidth >= 1024 ? '300px' : window.innerWidth >= 640 ? '200px' : '60px';
+      const arrowWidthHalf = window.innerWidth >= 1024 ? '150px' : window.innerWidth >= 640 ? '100px' : '60px';
+
+      if (currentStep === 0) {
+        // Al inicio: solo flecha derecha (ancho completo)
+        prevBtn.style.opacity = '0';
+        prevBtn.style.width = '0';
+        nextBtn.style.opacity = '1';
+        nextBtn.style.width = arrowWidthFull;
+      } else if (currentStep >= maxStep) {
+        // Al final: solo flecha izquierda (ancho completo)
+        prevBtn.style.opacity = '1';
+        prevBtn.style.width = arrowWidthFull;
+        nextBtn.style.opacity = '0';
+        nextBtn.style.width = '0';
+      } else {
+        // En medio: ambas flechas visibles (mitad ancho)
+        prevBtn.style.opacity = '1';
+        prevBtn.style.width = arrowWidthHalf;
+        nextBtn.style.opacity = '1';
+        nextBtn.style.width = arrowWidthHalf;
+      }
+
+      // Deshabilitar flechas en extremos
+      prevBtn.disabled = currentStep === 0;
+      nextBtn.disabled = currentStep >= maxStep;
+    };
+
+    // Scroll a paso específico
+    const scrollToStep = (step: number) => {
+      invalidateCache(); // Recalcular por si hay cambios de viewport
+      const stepWidth = getStepWidth();
+      const visibleSteps = getVisibleSteps();
+      const maxStep = Math.max(0, totalSteps - visibleSteps);
+
+      // Limitar step al rango válido
+      currentStep = Math.max(0, Math.min(step, maxStep));
+
+      container.scrollTo({
+        left: currentStep * stepWidth,
+        behavior: 'smooth'
+      });
+      updateButtons();
+    };
+
+    // Event listeners
+    prevBtn.addEventListener('click', () => {
+      if (currentStep > 0) {
+        scrollToStep(currentStep - 1);
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      const visibleSteps = getVisibleSteps();
+      const maxStep = Math.max(0, totalSteps - visibleSteps);
+      if (currentStep < maxStep) {
+        scrollToStep(currentStep + 1);
+      }
+    });
+
+    // Resize handler optimizado con debounce
+    const handleResize = debounce(() => {
+      invalidateCache(); // Forzar recálculo
+      // Recalcular posición actual por si cambió el número de cuadros visibles
+      const visibleSteps = getVisibleSteps();
+      const maxStep = Math.max(0, totalSteps - visibleSteps);
+      if (currentStep > maxStep) {
+        scrollToStep(maxStep);
+      } else {
+        updateButtons();
+      }
+    }, 150); // 150ms debounce - balance entre responsividad y performance
+
+    window.addEventListener('resize', handleResize, { passive: true });
+
+    // Estado inicial
+    updateButtons();
+  }
+</script>

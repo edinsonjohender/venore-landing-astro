@@ -1,0 +1,90 @@
+---
+import { getCollection } from 'astro:content';
+import ImagePlaceholder from '../ui/ImagePlaceholder.astro';
+
+const posts = (await getCollection('blog'))
+  .filter(post => !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+---
+
+<section id="blog" class="py-24 border-t border-border">
+  <div class="container mx-auto px-6">
+    <!-- Header -->
+    <div class="flex items-end justify-between mb-12">
+      <div>
+        <p class="text-xs text-foreground-subtle uppercase tracking-wider mb-4">From the Blog</p>
+        <h2 class="text-3xl lg:text-4xl font-bold tracking-tight">
+          Latest <span class="text-foreground-muted">Insights</span>
+        </h2>
+      </div>
+      <a
+        href="/blog"
+        class="hidden sm:flex items-center gap-2 text-sm text-foreground-muted hover:text-foreground transition-colors"
+      >
+        View all posts
+        <span>→</span>
+      </a>
+    </div>
+
+    <!-- Posts Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {posts.map((post) => (
+        <a href={`/blog/${post.slug}`} class="group block">
+          <article class="h-full border border-border rounded-lg overflow-hidden hover:border-border-hover transition-colors">
+            <div class="aspect-video bg-background-tertiary">
+              {post.data.image ? (
+                <img
+                  src={post.data.image}
+                  alt={post.data.title}
+                  loading="lazy"
+                  decoding="async"
+                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              ) : (
+                <ImagePlaceholder />
+              )}
+            </div>
+            <div class="p-5">
+              <h3 class="font-semibold mb-2 group-hover:text-foreground-muted transition-colors line-clamp-2">
+                {post.data.title}
+              </h3>
+              <p class="text-sm text-foreground-muted mb-3 line-clamp-2">
+                {post.data.description}
+              </p>
+              <div class="flex items-center gap-2 text-sm text-foreground-subtle">
+                <span class="text-status-stable">{post.data.category}</span>
+                <span>·</span>
+                <time>
+                  {post.data.date.toLocaleDateString('en-US', {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric'
+                  })}
+                </time>
+              </div>
+            </div>
+          </article>
+        </a>
+      ))}
+    </div>
+
+    <!-- Mobile link -->
+    <a
+      href="/blog"
+      class="sm:hidden flex items-center justify-center gap-2 mt-8 text-sm text-foreground-muted hover:text-foreground transition-colors"
+    >
+      View all posts
+      <span>→</span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

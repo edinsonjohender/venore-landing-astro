@@ -1,0 +1,22 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { Navbar } from '../components/sections/Navbar';
+import { Hero } from '../components/sections/Hero';
+import Features from '../components/sections/Features.astro';
+import HowItWorks from '../components/sections/HowItWorks.astro';
+import BlogPreview from '../components/sections/BlogPreview.astro';
+import { CTA } from '../components/sections/CTA';
+import { Footer } from '../components/sections/Footer';
+---
+
+<Layout title="VENORE - The Context Layer for Autonomous Engineering">
+  <Navbar client:idle />
+  <main>
+    <Hero client:load />
+    <Features />
+    <HowItWorks />
+    <BlogPreview />
+    <CTA client:visible />
+  </main>
+  <Footer />
+</Layout>
