@@ -7,9 +7,27 @@ export const POST: APIRoute = async ({ request }) => {
     const body = await request.json();
     const { email } = body;
 
-    if (!email || !email.includes('@')) {
+    // Input validation
+    if (!email || typeof email !== 'string') {
       return new Response(
-        JSON.stringify({ error: 'Invalid email' }),
+        JSON.stringify({ error: 'Email is required' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Email validation (basic)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return new Response(
+        JSON.stringify({ error: 'Invalid email format' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    // Length validation
+    if (email.length > 254) {
+      return new Response(
+        JSON.stringify({ error: 'Email too long' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
