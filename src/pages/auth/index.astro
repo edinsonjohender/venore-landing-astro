@@ -1,0 +1,18 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Sign In — VENORE">
+  <div id="auth-root">
+    <!-- React mounts here -->
+  </div>
+
+  <script>
+    import { createElement } from 'react';
+    import { createRoot } from 'react-dom/client';
+    import { AuthPage } from '../../components/auth/AuthPage';
+
+    const root = createRoot(document.getElementById('auth-root')!);
+    root.render(createElement(AuthPage));
+  </script>
+</Layout>

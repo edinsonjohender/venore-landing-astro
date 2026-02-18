@@ -1,0 +1,18 @@
+---
+import Layout from '../../layouts/Layout.astro';
+---
+
+<Layout title="Signing In — VENORE">
+  <div id="callback-root">
+    <!-- React mounts here -->
+  </div>
+
+  <script>
+    import { createElement } from 'react';
+    import { createRoot } from 'react-dom/client';
+    import { AuthCallback } from '../../components/auth/AuthCallback';
+
+    const root = createRoot(document.getElementById('callback-root')!);
+    root.render(createElement(AuthCallback));
+  </script>
+</Layout>
