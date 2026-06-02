@@ -17,13 +17,13 @@ export function Navbar() {
 
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-6">
-          <a href="#features" className="text-sm text-foreground-muted hover:text-foreground transition-colors">
+          <a href="/#features" className="text-sm text-foreground-muted hover:text-foreground transition-colors">
             Features
           </a>
-          <a href="#how-it-works" className="text-sm text-foreground-muted hover:text-foreground transition-colors">
+          <a href="/#how-it-works" className="text-sm text-foreground-muted hover:text-foreground transition-colors">
             How it works
           </a>
-          <a href="#download" className="text-sm text-foreground-muted hover:text-foreground transition-colors">
+          <a href="/#download" className="text-sm text-foreground-muted hover:text-foreground transition-colors">
             Download
           </a>
           <a href="/blog" className="text-sm text-foreground-muted hover:text-foreground transition-colors">
@@ -53,21 +53,21 @@ export function Navbar() {
         >
           <div className="container mx-auto px-6 py-4 flex flex-col gap-3">
             <a
-              href="#features"
+              href="/#features"
               className="text-sm text-foreground-muted hover:text-foreground transition-colors py-1"
               onClick={() => setIsOpen(false)}
             >
               Features
             </a>
             <a
-              href="#how-it-works"
+              href="/#how-it-works"
               className="text-sm text-foreground-muted hover:text-foreground transition-colors py-1"
               onClick={() => setIsOpen(false)}
             >
               How it works
             </a>
             <a
-              href="#download"
+              href="/#download"
               className="text-sm text-foreground-muted hover:text-foreground transition-colors py-1"
               onClick={() => setIsOpen(false)}
             >
