@@ -1,4 +1,4 @@
-# Contributing to VERONICA Landing Page
+# Contributing to VENORE Landing Page
 
 Thank you for your interest in contributing! This document provides guidelines for contributing to this project.
 

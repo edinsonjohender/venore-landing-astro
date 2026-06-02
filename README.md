@@ -1,4 +1,4 @@
-# VERONICA Landing Page
+# VENORE Landing Page
 
 > **The Context Layer for Autonomous Engineering**
 
@@ -229,7 +229,7 @@ See [LICENSE](LICENSE) for the full license text.
 
 If you use this code, you must include visible attribution:
 
-> "Based on VERONICA Landing Page by Edinson Johender"
+> "Based on VENORE Landing Page by Edinson Johender"
 
 This must appear in your footer, credits, or about page.
 

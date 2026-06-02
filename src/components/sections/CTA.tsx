@@ -15,7 +15,7 @@ export function CTA() {
           </h2>
 
           <p className="text-foreground-muted mb-8">
-            Transform how you understand your projects with VERONICA AI.
+            Transform how you understand your projects with VENORE AI.
           </p>
 
           {/* Waitlist Form */}
