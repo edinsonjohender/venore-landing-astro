@@ -1,0 +1,72 @@
+---
+// Two product modes presented as a high-contrast split panel.
+// Codebase panel stays dark; Knowledge panel inverts (light) for impact.
+// Each panel pairs a small pure-CSS isometric visual beside its copy.
+import IsoNode from '../svg/IsoNode.astro';
+import IsoLighthouse from '../svg/IsoLighthouse.astro';
+---
+
+<section id="modes" class="border-t border-border">
+  <!-- Header -->
+  <div class="border-b border-border p-8 lg:p-12">
+    <p class="text-xs text-foreground-subtle uppercase tracking-wider mb-3">Modes</p>
+    <h2 class="text-4xl lg:text-6xl font-bold tracking-tight">
+      Two modes, <span class="text-foreground-muted">one canvas</span>
+    </h2>
+  </div>
+
+  <!-- Split panels -->
+  <div class="grid grid-cols-1 lg:grid-cols-2">
+
+    <!-- Panel 01 — Codebase (dark) -->
+    <div class="border-b lg:border-b-0 lg:border-r border-border p-8 lg:p-12">
+      <div class="flex flex-col sm:flex-row sm:items-center gap-6 lg:gap-8">
+        <!-- Visual -->
+        <div class="shrink-0"><IsoNode /></div>
+        <!-- Content -->
+        <div class="min-w-0">
+          <div class="flex items-center justify-between font-mono text-xs text-foreground-subtle mb-4">
+            <span>mode: 01</span>
+            <span>for code</span>
+          </div>
+          <h3 class="text-3xl lg:text-4xl font-bold tracking-tight mb-4">Codebase</h3>
+          <p class="text-sm text-foreground-muted leading-relaxed mb-6 max-w-sm">
+            Point the agent at a repo and it works with real tools, always with the project's full context: it reads and edits files, runs the terminal, searches the code and browses the web.
+          </p>
+          <div class="flex flex-wrap gap-2 font-mono text-xs text-foreground-subtle">
+            <span class="border border-border px-2 py-1">edit</span>
+            <span class="border border-border px-2 py-1">terminal</span>
+            <span class="border border-border px-2 py-1">search</span>
+            <span class="border border-border px-2 py-1">web</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel 02 — Knowledge -->
+    <div class="p-8 lg:p-12">
+      <div class="flex flex-col sm:flex-row sm:items-center gap-6 lg:gap-8">
+        <!-- Visual -->
+        <div class="shrink-0"><IsoLighthouse /></div>
+        <!-- Content -->
+        <div class="min-w-0">
+          <div class="flex items-center justify-between font-mono text-xs text-foreground-subtle mb-4">
+            <span>mode: 02</span>
+            <span>for knowledge</span>
+          </div>
+          <h3 class="text-3xl lg:text-4xl font-bold tracking-tight mb-4">Knowledge</h3>
+          <p class="text-sm text-foreground-muted leading-relaxed mb-6 max-w-sm">
+            Organize ideas, research and decisions as islands on a canvas. Lighthouses anchor each topic, nodes branch into subtopics, and connections link them together.
+          </p>
+          <div class="flex flex-wrap gap-2 font-mono text-xs text-foreground-subtle">
+            <span class="border border-border px-2 py-1">islands</span>
+            <span class="border border-border px-2 py-1">lighthouses</span>
+            <span class="border border-border px-2 py-1">nodes</span>
+            <span class="border border-border px-2 py-1">connections</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

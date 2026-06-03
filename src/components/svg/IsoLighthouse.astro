@@ -1,0 +1,109 @@
+---
+// Pure-CSS isometric lighthouse (faro), companion to IsoNode.
+// A tall dark pillar with a glowing lamp on top and light spilling down from it.
+// Mirrors the app's Lighthouse node (a tall pillar that anchors an island).
+const lamp = "#f59e0b"; // amber light
+---
+
+<div class="iso">
+  <div class="float">
+    <div class="tower" style={`--type: ${lamp};`}>
+      <div class="face top">
+        <span class="lamp" style={`--type: ${lamp};`}></span>
+      </div>
+      <div class="face n"></div>
+      <div class="face s"></div>
+      <div class="face e"></div>
+      <div class="face w"></div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .iso {
+    --w: 40px;        /* footprint */
+    --h: 100px;       /* pillar height */
+    --body: #3d3d52;
+    --edge: #6b6b8a;
+    width: 170px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 800px;
+  }
+
+  .float {
+    animation: bob 5s ease-in-out infinite;
+  }
+
+  .tower {
+    position: relative;
+    width: var(--w);
+    height: var(--w);
+    transform-style: preserve-3d;
+    transform: rotateX(60deg) rotateZ(45deg);
+  }
+
+  .face {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    box-sizing: border-box;
+    border: 1px solid var(--edge);
+    background-color: color-mix(in srgb, var(--body) 86%, #000);
+  }
+
+  .face.top {
+    width: var(--w);
+    height: var(--w);
+    background-color: color-mix(in srgb, var(--body) 70%, var(--type));
+    transform: translate(-50%, -50%) translateZ(calc(var(--h) / 2));
+  }
+
+  /* Light spills DOWN from the lamp: glow at the top of each side face. */
+  .face.n {
+    width: var(--w);
+    height: var(--h);
+    background-image: linear-gradient(to top, transparent 55%, color-mix(in srgb, var(--type) 60%, transparent));
+    transform: translate(-50%, -50%) rotateX(90deg) translateZ(calc(var(--w) / 2));
+  }
+  .face.s {
+    width: var(--w);
+    height: var(--h);
+    background-image: linear-gradient(to bottom, transparent 55%, color-mix(in srgb, var(--type) 60%, transparent));
+    transform: translate(-50%, -50%) rotateX(-90deg) translateZ(calc(var(--w) / 2));
+  }
+  .face.e {
+    width: var(--h);
+    height: var(--w);
+    background-image: linear-gradient(to right, transparent 55%, color-mix(in srgb, var(--type) 60%, transparent));
+    transform: translate(-50%, -50%) rotateY(90deg) translateZ(calc(var(--w) / 2));
+  }
+  .face.w {
+    width: var(--h);
+    height: var(--w);
+    background-image: linear-gradient(to left, transparent 55%, color-mix(in srgb, var(--type) 60%, transparent));
+    transform: translate(-50%, -50%) rotateY(-90deg) translateZ(calc(var(--w) / 2));
+  }
+
+  .lamp {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 38%;
+    height: 38%;
+    transform: translate(-50%, -50%);
+    background: var(--type);
+    box-shadow: 0 0 16px 2px var(--type);
+  }
+
+  @keyframes bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .float { animation: none; }
+  }
+</style>

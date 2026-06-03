@@ -1,0 +1,135 @@
+---
+// Pure-CSS isometric "tower" node, a lightweight homage to the app's 3D Ocean node.
+// No JS, no WebGL. A stack of rounded-box layers, each tinted by its layer type,
+// with a wireframe edge and a colored indicator on the top face.
+//
+// Layer types & colors mirror the app (crates/.../ocean/nodes/colors.ts):
+//   context #8b5cf6 · connections #3b82f6 · documentation #06b6d4 · tests #10b981
+const layers = [
+  { type: "#8b5cf6" }, // context (bottom)
+  { type: "#3b82f6" }, // connections
+  { type: "#06b6d4" }, // documentation
+  { type: "#10b981" }, // tests (top)
+];
+const topColor = layers[layers.length - 1].type;
+---
+
+<div class="iso">
+  <div class="float">
+    <div class="tower">
+      {layers.map((layer, i) => (
+        <div class="layer" style={`--lz: calc((var(--h) + var(--gap)) * ${i}); --type: ${layer.type};`}>
+          <div class="face top">
+            {i === layers.length - 1 && <span class="indicator" style={`--type: ${topColor};`} />}
+          </div>
+          <div class="face n"></div>
+          <div class="face s"></div>
+          <div class="face e"></div>
+          <div class="face w"></div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+  .iso {
+    --w: 64px;        /* footprint width/depth */
+    --h: 18px;        /* layer height */
+    --gap: 5px;       /* gap between layers */
+    --body: #3d3d52;
+    --edge: #6b6b8a;
+    width: 170px;
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 800px;
+  }
+
+  .float {
+    animation: bob 5s ease-in-out infinite;
+  }
+
+  .tower {
+    position: relative;
+    width: var(--w);
+    height: var(--w);
+    transform-style: preserve-3d;
+    transform: rotateX(60deg) rotateZ(45deg);
+  }
+
+  .layer {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 0;
+    height: 0;
+    transform-style: preserve-3d;
+    transform: translateZ(var(--lz));
+  }
+
+  .face {
+    position: absolute;
+    left: 0;
+    top: 0;
+    box-sizing: border-box;
+    border: 1px solid var(--edge);
+    /* Dark body; the type color comes in as a base glow per orientation */
+    background-color: color-mix(in srgb, var(--body) 86%, #000);
+  }
+
+  .face.top {
+    width: var(--w);
+    height: var(--w);
+    background-color: color-mix(in srgb, var(--body) 78%, #000);
+    transform: translate(-50%, -50%) translateZ(calc(var(--h) / 2));
+  }
+
+  /* Side faces: dark body + a color gradient glowing up from the base.
+     Gradient direction differs per face because of the rotation applied. */
+  .face.n {
+    width: var(--w);
+    height: var(--h);
+    background-image: linear-gradient(to bottom, color-mix(in srgb, var(--type) 65%, transparent), transparent 65%);
+    transform: translate(-50%, -50%) rotateX(90deg) translateZ(calc(var(--w) / 2));
+  }
+  .face.s {
+    width: var(--w);
+    height: var(--h);
+    background-image: linear-gradient(to top, color-mix(in srgb, var(--type) 65%, transparent), transparent 65%);
+    transform: translate(-50%, -50%) rotateX(-90deg) translateZ(calc(var(--w) / 2));
+  }
+  .face.e {
+    width: var(--h);
+    height: var(--w);
+    background-image: linear-gradient(to left, color-mix(in srgb, var(--type) 65%, transparent), transparent 65%);
+    transform: translate(-50%, -50%) rotateY(90deg) translateZ(calc(var(--w) / 2));
+  }
+  .face.w {
+    width: var(--h);
+    height: var(--w);
+    background-image: linear-gradient(to right, color-mix(in srgb, var(--type) 65%, transparent), transparent 65%);
+    transform: translate(-50%, -50%) rotateY(-90deg) translateZ(calc(var(--w) / 2));
+  }
+
+  .indicator {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 22%;
+    height: 22%;
+    transform: translate(-50%, -50%);
+    background: var(--type);
+    box-shadow: 0 0 10px var(--type);
+  }
+
+  @keyframes bob {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .float { animation: none; }
+  }
+</style>

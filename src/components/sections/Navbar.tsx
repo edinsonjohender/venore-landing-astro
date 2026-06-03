@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "../ui/button";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 
@@ -33,7 +32,14 @@ export function Navbar() {
 
         {/* CTA */}
         <div className="hidden md:flex items-center gap-3">
-          <Button size="sm" disabled>Coming Soon</Button>
+          <a
+            href="https://github.com/edinsonjohender/venore"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground-subtle bg-foreground text-background hover:bg-foreground/90 h-9 px-3 text-sm"
+          >
+            View on GitHub
+          </a>
         </div>
 
         {/* Mobile menu button */}
@@ -80,9 +86,15 @@ export function Navbar() {
             >
               Blog
             </a>
-            <Button size="sm" className="w-full mt-2" disabled>
-              Coming Soon
-            </Button>
+            <a
+              href="https://github.com/edinsonjohender/venore"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsOpen(false)}
+              className="inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground-subtle bg-foreground text-background hover:bg-foreground/90 h-9 px-3 text-sm w-full mt-2"
+            >
+              View on GitHub
+            </a>
           </div>
         </div>
       )}
