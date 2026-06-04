@@ -1,7 +1,8 @@
 "use client";
 
-import { Github } from "lucide-react";
+import { Download, Github } from "lucide-react";
 import { IsometricGrid } from "../svg/IsometricGrid";
+import { WINDOWS_DOWNLOAD_URL, REPO_URL } from "../../lib/release";
 
 export function Hero() {
   return (
@@ -45,15 +46,24 @@ export function Hero() {
             </p>
 
             {/* CTA */}
-            <a
-              href="https://github.com/edinsonjohender/venore"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-foreground text-background text-sm font-medium rounded-md hover:bg-foreground/90 transition-colors w-fit"
-            >
-              <Github className="w-4 h-4" />
-              View on GitHub
-            </a>
+            <div className="flex flex-wrap items-center gap-3">
+              <a
+                href={WINDOWS_DOWNLOAD_URL}
+                className="inline-flex items-center justify-center gap-2 h-10 px-5 bg-foreground text-background text-sm font-medium rounded-md hover:bg-foreground/90 transition-colors w-fit"
+              >
+                <Download className="w-4 h-4" />
+                Download for Windows
+              </a>
+              <a
+                href={REPO_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 h-10 px-5 border border-border text-foreground text-sm font-medium rounded-md hover:bg-background-tertiary transition-colors w-fit"
+              >
+                <Github className="w-4 h-4" />
+                View on GitHub
+              </a>
+            </div>
           </div>
 
           {/* Bottom info - 2 columns */}
